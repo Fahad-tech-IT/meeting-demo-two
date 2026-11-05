@@ -1,9 +1,9 @@
 "use client";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useParams } from "next/navigation";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 
-export default function Room() {
+function RoomContent() {
   const { id } = useParams<{ id: string }>();
   const [name, setName] = useState("");
   const [joined, setJoined] = useState(false);
@@ -67,5 +67,13 @@ export default function Room() {
         />
       </div>
     </div>
+  );
+}
+
+export default function Room() {
+  return (
+    <Suspense fallback={<main className="min-h-screen bg-slate-50" />}>
+      <RoomContent />
+    </Suspense>
   );
 }
