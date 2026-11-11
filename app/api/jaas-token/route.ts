@@ -58,9 +58,10 @@ export async function POST(req: Request) {
           user: {
             id: randomUUID(),
             name: name.trim().slice(0, 50),
-            moderator: isHost ? "true" : "false",
+            moderator: isHost,
           },
           features: {
+            lobby: true,
             recording: "false",
             livestreaming: "false",
             transcription: "false",
@@ -72,7 +73,7 @@ export async function POST(req: Request) {
       { algorithm: "RS256", keyid: keyId },
     );
 
-    return NextResponse.json({ token });
+    return NextResponse.json({ token, isHost });
   } catch (error) {
     console.error("Could not sign JaaS token", error);
     return NextResponse.json(
